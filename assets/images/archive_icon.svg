@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg version="1.1" viewBox="0 0 2000 2000" xmlns="http://www.w3.org/2000/svg">
+ <g transform="translate(0 947.64)">
+  <g transform="matrix(3.2835 0 0 3.2835 179.84 -2565.1)" fill-rule="evenodd" stroke-linecap="round">
+   <circle transform="rotate(-90)" cx="-796.79" cy="254.58" r="247.5" fill="#fff" stroke="#045" stroke-width="5"/>
+   <g transform="matrix(.80464 0 0 .80374 50.333 169.06)" stroke-width="6.2174">
+    <g transform="translate(-21.064 -17.41)">
+     <rect x="244.47" y="626.86" width="84.58" height="275.86" ry=".55586" fill="#045" stroke="#045"/>
+     <rect x="260.25" y="646.59" width="49.447" height="191.28" ry=".49824" fill="#80e5ff" stroke="#0a8"/>
+     <circle cx="286.76" cy="872.4" r="17.5" fill="#0a8" stroke="#045"/>
+     <g transform="translate(0 3.3729)" fill="#045" stroke="#0a8">
+      <rect x="270.66" y="664.96" width="28.627" height="7.8074" ry=".55586"/>
+      <rect x="270.66" y="684.96" width="28.627" height="7.8074" ry=".55586"/>
+      <rect x="270.66" y="704.96" width="28.627" height="7.8074" ry=".55586"/>
+      <rect x="270.66" y="724.96" width="28.627" height="7.8074" ry=".55586"/>
+      <rect x="270.66" y="744.96" width="28.627" height="7.8074" ry=".55586"/>
+      <rect x="270.66" y="784.96" width="28.627" height="7.8074" ry=".55586"/>
+      <rect x="270.66" y="764.96" width="28.627" height="7.8074" ry=".55586"/>
+      <rect x="270.66" y="804.96" width="28.627" height="7.8074" ry=".55586"/>
+     </g>
+    </g>
+    <g transform="translate(-1.3012 -14.807)">
+     <rect x="335.56" y="624.26" width="84.58" height="275.86" ry=".55586" fill="#0a8" stroke="#045"/>
+     <rect x="351.33" y="643.99" width="49.447" height="191.28" ry=".49824" fill="#80e5ff" stroke="#045"/>
+     <circle cx="377.85" cy="869.8" r="17.5" fill="#0a8" stroke="#045"/>
+     <rect x="361.74" y="665.73" width="28.627" height="7.8074" ry=".55586" fill="#045" stroke="#0a8"/>
+     <rect x="361.74" y="685.73" width="28.627" height="7.8074" ry=".55586" fill="#045" stroke="#0a8"/>
+     <rect x="361.74" y="705.73" width="28.627" height="7.8074" ry=".55586" fill="#045" stroke="#0a8"/>
+     <rect x="361.74" y="725.73" width="28.627" height="7.8074" ry=".55586" fill="#045" stroke="#0a8"/>
+     <rect x="361.74" y="745.73" width="28.627" height="7.8074" ry=".55586" fill="#045" stroke="#0a8"/>
+     <rect x="361.74" y="785.73" width="28.627" height="7.8074" ry=".55586" fill="#045" stroke="#0a8"/>
+     <rect x="361.74" y="765.73" width="28.627" height="7.8074" ry=".55586" fill="#045" stroke="#0a8"/>
+     <rect x="361.74" y="805.73" width="28.627" height="7.8074" ry=".55586" fill="#045" stroke="#0a8"/>
+    </g>
+    <g transform="translate(-14.314 -18.217)">
+     <g transform="translate(-.59012)">
+      <rect x="127.46" y="627.67" width="84.58" height="275.86" ry=".55586" fill="#80e5ff" stroke="#045"/>
+      <rect x="145.03" y="677.11" width="49.447" height="176.97" ry=".46096" fill="#045" stroke="#0a8"/>
+      <circle cx="169.75" cy="651.09" r="15" fill="#0a8" stroke="#045"/>
+      <circle cx="169.75" cy="880.11" r="15" fill="#0a8" stroke="#045"/>
+     </g>
+     <g fill="#5df" stroke="#0a8">
+      <rect x="154.85" y="690.62" width="28.627" height="7.8074" ry=".55586"/>
+      <rect x="154.85" y="710.62" width="28.627" height="7.8074" ry=".55586"/>
+      <rect x="154.85" y="730.62" width="28.627" height="7.8074" ry=".55586"/>
+      <rect x="154.85" y="750.62" width="28.627" height="7.8074" ry=".55586"/>
+      <rect x="154.85" y="770.62" width="28.627" height="7.8074" ry=".55586"/>
+      <rect x="154.85" y="790.62" width="28.627" height="7.8074" ry=".55586"/>
+      <rect x="154.85" y="810.62" width="28.627" height="7.8074" ry=".55586"/>
+      <rect x="154.85" y="830.62" width="28.627" height="7.8074" ry=".55586"/>
+     </g>
+    </g>
+    <rect x="44.242" y="889.71" width="426.8" height="24.723" ry="12.362" fill="#0a8" stroke="#045"/>
+   </g>
+  </g>
+ </g>
+</svg>

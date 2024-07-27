@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="210mm" height="297mm" version="1.1" xmlns="http://www.w3.org/2000/svg">
+ <rect x="121.71" y="117.83" width="533.43" height="318.41" ry="25.659" fill="#0a0a0a" opacity=".84898" stroke="#000" stroke-linecap="round" stroke-width="14.17"/>
+ <g transform="matrix(1.3617 0 0 1.3617 -3.7206 33.468)">
+  <path d="m87.463 6.4207h401.43v73.531h-401.43z" stroke-width="0"/>
+  <path d="m88.609 6.8591h37.891l34.068 72.373-42.03-0.16516z" fill="#fff" stroke="#000"/>
+  <path d="m168.21 6.8591h37.891l34.068 72.373-42.03-0.16516z" fill="#fff" stroke="#000"/>
+  <path d="m252.92 6.8591h37.891l34.068 72.373-42.03-0.16516z" fill="#fff" stroke="#000"/>
+  <path d="m337.32 7.4818h37.891l34.068 72.373-42.03-0.16516z" fill="#fff" stroke="#000"/>
+ </g>
+ <g transform="matrix(1.2971 .4144 -.4144 1.2971 38.992 -154.95)">
+  <path d="m87.463 6.4207h401.43v73.531h-401.43z" stroke-width="0"/>
+  <path d="m88.609 6.8591h37.891l34.068 72.373-42.03-0.16516z" fill="#fff" stroke="#000"/>
+  <path d="m168.21 6.8591h37.891l34.068 72.373-42.03-0.16516z" fill="#fff" stroke="#000"/>
+  <path d="m252.92 6.8591h37.891l34.068 72.373-42.03-0.16516z" fill="#fff" stroke="#000"/>
+  <path d="m337.32 7.4818h37.891l34.068 72.373-42.03-0.16516z" fill="#fff" stroke="#000"/>
+ </g>
+ <path transform="matrix(.67853 0 0 .65857 195.74 107.79)" d="m655.5-34.212a36.664 37.775 0 1 1 -73.327 0 36.664 37.775 0 1 1 73.327 0z" fill="#4a3f0b" stroke="#685b25" stroke-linecap="square" stroke-width="6.3"/>
+ <rect x="601.15" y="81.426" width="28.173" height="4.9889" ry="2.4944" fill="#484328"/>
+ <path d="m141.31 218.51 469.84-2.4156" fill="none" stroke="#f2f2f2" stroke-width="1.7"/>
+ <path d="m143.73 342.92 469.84-2.4156" fill="none" stroke="#f2f2f2" stroke-width="1.7"/>
+ <path d="m143.73 277.7 469.84-2.4156" fill="none" stroke="#f2f2f2" stroke-width="1.7"/>
+ <path d="m370.8 278.9-1.2078 61.599" fill="none" stroke="#f4e7e7" stroke-width="1.5"/>
+</svg>
