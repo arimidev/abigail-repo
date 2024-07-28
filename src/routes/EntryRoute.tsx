@@ -8,7 +8,6 @@ import MainRoute from "./MainRoute";
 import { select_screen, setScreen } from "../redux_utils/features/screen";
 import { useGet_userMutation } from "../redux_utils/api_slice";
 import { setUser } from "../redux_utils/features/user";
-import colors from "../utils/colors";
 import { DummyComp } from "../components/DummyComp";
 import { jwtDecode } from "jwt-decode";
 
@@ -29,18 +28,22 @@ const EntryRoute = () => {
     (async () => {
       try {
         if (user_token == null) {
+          // go to auth screen
           dispatch(setScreen("auth"));
           return;
         }
-
+        // get user profile with decoded id
         const userRes = await get_user(
           jwtDecode<Decoded>(user_token)._id
         ).unwrap();
         console.log(userRes);
+        // save user profile
         dispatch(setUser(userRes.results));
+        // take user to home
         dispatch(setScreen("home"));
       } catch (err) {
         console.log(err);
+        // clear token and go to auth screen
         dispatch(deleteToken(null));
         dispatch(setScreen("auth"));
       }

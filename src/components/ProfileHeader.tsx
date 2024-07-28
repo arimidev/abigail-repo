@@ -165,12 +165,10 @@ export const ProfileHeader = ({ user, on_follow }: Props) => {
       ]}
     >
       <View style={[_styles.flex_row, { gap: 15, flex: 1 }]}>
-        <StoryRing size={70}>
-          <Image
-            source={getImage({ uri: user?.image_url, gender: user?.gender })}
-            style={styles.avatar}
-          />
-        </StoryRing>
+        <Image
+          source={getImage({ uri: user?.image_url, gender: user?.gender })}
+          style={styles.avatar}
+        />
 
         <View style={{ flex: 1 }}>
           <Text style={[_styles.font_14_bold, { color: colors.color_2 }]}>
