@@ -1,10 +1,13 @@
-## Abigail
+## Texh stack
 
-Expand Your Reach: Connect with a larger audience and promote your products more effectively.
+Front End
+- React Native
+- Redux
+- RTK Query
 
-Dual Functionality: Enjoy the benefits of a social media app and a marketplace in one place.
+Back End
+- ExpressJs
+- Mongoose
 
-Discover Products: Search through hundreds of products sold by users just like you.
-
-Personal Shop Section: Showcase your products with a dedicated shop section on your profile, making it easier for users to browse and buy.
-
+Database
+- MongoDB
