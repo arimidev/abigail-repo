@@ -5,6 +5,7 @@ import TabRoute from "./TabRoute";
 import { ProfileMenu } from "../screens/profile_section/ProfileMenu";
 import { PersonalDetails } from "../screens/profile_section/PersonalDetails";
 import { UserProfile } from "../screens/general-screens/UserProfile";
+import { PostDetails } from "../screens/general-screens/PostDetails";
 
 const MainRoute = () => {
   const Stack = createNativeStackNavigator();
@@ -23,8 +24,13 @@ const MainRoute = () => {
           options={{ animation: "slide_from_bottom" }}
         />
       </Stack.Group>
-      <Stack.Group>
+      <Stack.Group screenOptions={{ animation: "slide_from_right" }}>
         <Stack.Screen component={UserProfile} name="user_profile" />
+        <Stack.Screen
+          component={PostDetails}
+          name="post_details"
+          options={{ headerShown: true, title: "Post" }}
+        />
       </Stack.Group>
     </Stack.Navigator>
   );
