@@ -1,13 +1,13 @@
-## Texh stack
+## Tech stack 🚀
 
-Front End
+Front End 💻
 - React Native
 - Redux
 - RTK Query
 
-Back End
+Back End 🔥
 - ExpressJs
 - Mongoose
 
-Database
+Database ☑️
 - MongoDB
