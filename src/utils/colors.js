@@ -7,4 +7,5 @@ export default {
   color_4: "#6240D4",
   color_5: "#979797",
   color_6: "#717171",
+  color_7: "#F3F3F3",
 };

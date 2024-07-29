@@ -44,3 +44,17 @@ type UserPostProps = {
   reposts: number;
   saves: number;
 };
+
+type CommentProps = {
+  owner: UserProps;
+  _id: String;
+  medias: Array<string>;
+  post_text: string;
+  created_at: string;
+  is_liked_by_user: boolean;
+  is_saved_by_user: boolean;
+  is_commented_by_user: boolean;
+  likes: number;
+  comments: number;
+  saves: number;
+};
