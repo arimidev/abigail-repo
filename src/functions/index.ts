@@ -83,14 +83,21 @@ export function getDate(date: string) {
   }
   return null;
 }
-export function getDateTime() {}
+// export function getDateTime(date: string) {
+//   if (date) {
+//     return `${months[new Date(date).getMonth()]} ${new Date(
+//       date
+//     ).getDate()}, ${new Date(date).getFullYear()} ${new Date(date).ge}`;
+//   }
+//   return null;
+// }
 
 export function getImage({
   uri,
   gender,
 }: {
   uri: string;
-  gender: "Male" | "Female";
+  gender: "male" | "female";
 }) {
   if (uri && typeof uri == "string") {
     return { uri: uri };

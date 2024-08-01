@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import spacing from "../../utils/spacing";
 import _styles from "../../utils/_styles";
@@ -6,14 +6,25 @@ import colors from "../../utils/colors";
 import { getImage, getName } from "../../functions";
 import { CommentActionBtns } from "./CommentActions";
 import { Image } from "expo-image";
+import { useNavigation } from "@react-navigation/native";
 
 interface Props {
   item: CommentProps;
 }
 
 export const CommentComp = ({ item }: Props) => {
+  const navigation = useNavigation<any>();
   return (
-    <View style={{ paddingHorizontal: spacing.padding_horizontal }}>
+    <Pressable
+      onPress={() => navigation.push("comment_page", { passedData: item })}
+      style={({ pressed }) => [
+        {
+          paddingHorizontal: spacing.padding_horizontal,
+          backgroundColor: pressed ? "rgba(0,0,0,0.04)" : "transparent",
+        },
+      ]}
+      unstable_pressDelay={2000}
+    >
       <View
         style={[
           _styles.flex_row,
@@ -61,7 +72,7 @@ export const CommentComp = ({ item }: Props) => {
           <CommentActionBtns item={item} />
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 };
 

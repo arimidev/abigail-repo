@@ -22,12 +22,13 @@ import { PostActionBtns } from "../../components/posts/PostActionBtns";
 import spacing from "../../utils/spacing";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  add_post,
   select_seen_posts,
   update_post,
 } from "../../redux_utils/features/seen_posts";
 import CommentInput from "../../components/posts/CommentInput";
 import { CommentComp } from "../../components/posts/Comment";
-import { showToast } from "../../functions";
+import { getDate, showToast } from "../../functions";
 
 const UserRepostComp = ({ item }: { item: UserPostProps }) => {
   return (
@@ -68,6 +69,11 @@ const PostComp = ({ item }: { item: UserPostProps }) => {
       {item.type == "post" && (
         <>
           <PostHeader item={item} />
+          <View style={[, { paddingHorizontal: spacing.padding_horizontal }]}>
+            <Text style={[_styles.font_12_medium, { fontSize: 10 }]}>
+              {getDate(item.created_at)}
+            </Text>
+          </View>
           {item.post_text && <PostText item={item} type="details" />}
           {item.medias?.length > 0 && <PostMedias item={item} />}
           <PostActionBtns item={item} />
@@ -85,9 +91,8 @@ export const PostDetails = ({ navigation, route }) => {
   // route stuff
   const passedData: UserPostProps = route.params.passedData;
   // ======= states ====
-  const [postDataState, setPostData] = useState(passedData);
   const [comments, setComments] = useState<Array<CommentProps>>([]);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [is_data_available, set_is_data_available] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   // ===== api hooks  ====
@@ -98,31 +103,40 @@ export const PostDetails = ({ navigation, route }) => {
     refetch: postReftch,
   } = useGet_post_detailsQuery({ id: passedData._id });
 
+  const reduxItem = seen_posts.find(
+    (seen_post_item) => seen_post_item._id === postData?.results?._id
+  );
+
+  const postDataState = reduxItem ?? passedData;
+
   // comments
   const [getPostComments, { isLoading: mutCommentsLoading }] =
     useGetPostCommentsMutation();
 
-  const {
-    data: query_comments_data,
-    isLoading: queryCommentsLoading,
-    refetch: query_comments_refetch,
-  } = useGetPostComments_qQuery({
-    postId: passedData?._id,
-    page: 1,
-    limit: 5,
-  });
+  // const {
+  //   data: query_comments_data,
+  //   isLoading: queryCommentsLoading,
+  //   refetch: query_comments_refetch,
+  // } = useGetPostComments_qQuery({
+  //   postId: passedData?._id,
+  //   page: 1,
+  //   limit: 5,
+  // });
 
   // functions
 
-  async function getComments() {
+  async function getComments(page: number) {
     try {
       const res = await getPostComments({
         postId: passedData._id,
-        page: page + 1,
-        limit: 10,
+        page: page,
+        limit: 5,
       }).unwrap();
-      setComments([...comments, ...res.results]);
+      res.results.map((item) => {
+        dispatch(add_post(item));
+      });
       set_is_data_available(res.results?.length > 0);
+      return res.results;
     } catch (err) {
       console.log(err);
       showToast({
@@ -133,44 +147,62 @@ export const PostDetails = ({ navigation, route }) => {
     }
   }
 
-  const uniqueComments = Array.from(
-    comments.reduce((map, obj) => map.set(obj._id, obj), new Map()).values()
-  );
+  function setNextCommentPage(data) {
+    setComments([...comments, ...data]);
+    setPage(page + 1);
+  }
 
   const refreshFunc = useCallback(() => {
     setRefreshing(true);
     postReftch();
-    query_comments_refetch();
-    setRefreshing(queryCommentsLoading);
-    dispatch(update_post(postData?.results));
-  }, [query_comments_data]);
+    getComments(1).then((data) => {
+      setComments([...data, ...comments]);
+    });
+    setRefreshing(mutCommentsLoading);
+  }, []);
+
+  const validatedComments = (arr: Array<CommentProps>) => {
+    const validated_items = arr.map((comment) => {
+      const reduxItem = seen_posts.find(
+        (seen_comment) => seen_comment._id === comment._id
+      );
+      return reduxItem ? { ...comment, ...reduxItem } : comment;
+    });
+    return validated_items;
+  };
+
+  const uniqueComments = Array.from(
+    validatedComments(comments)
+      .reduce((map, obj) => map.set(obj._id, obj), new Map())
+      .values()
+  );
 
   //effects
 
   useEffect(() => {
     if (postData) {
-      const reduxItem = seen_posts.find(
-        (seen_post_item) => seen_post_item._id === postData?.results?._id
-      );
-      setPostData(reduxItem);
+      dispatch(add_post(postData.results));
     }
-  }, [postData, seen_posts]);
+  }, [postData]);
 
   useEffect(() => {
-    getComments().then(() => setPage(page + 1));
+    getComments(page).then(setNextCommentPage);
   }, []);
 
-  useEffect(() => {
-    if (query_comments_data?.results) {
-      setComments([...query_comments_data?.results, ...comments]);
-    }
-  }, [query_comments_data]);
+  // useEffect(() => {
+  // if (query_comments_data?.results) {
+  //   setComments([...query_comments_data?.results, ...comments]);
+  //   query_comments_data?.results.map((item) => {
+  //     dispatch(add_post(item));
+  //   });
+  // }
+  // }, [query_comments_data]);
 
   return (
     <View style={[_styles.flex_1, { backgroundColor: colors.color_1 }]}>
       <View style={{ flex: 1 }}>
         {postLoading && <Loader />}
-        {postData && !postLoading && (
+        {!postLoading && (
           <FlatList
             refreshing={refreshing}
             onRefresh={refreshFunc}
@@ -181,15 +213,15 @@ export const PostDetails = ({ navigation, route }) => {
             ListFooterComponent={
               mutCommentsLoading ? (
                 <View style={[_styles.all_center]}>
-                  <ActivityIndicator size={40} color={"#EAEAEA"} />
+                  <ActivityIndicator size={40} color={colors.color_2} />
                 </View>
               ) : (
                 <View />
               )
             }
             onEndReached={() => {
-              if (is_data_available == true) {
-                getComments().then(() => setPage(page + 1));
+              if (is_data_available == true && !mutCommentsLoading) {
+                getComments(page).then(setNextCommentPage);
               }
             }}
           />

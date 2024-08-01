@@ -1,10 +1,11 @@
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import _styles from "../../utils/_styles";
 import spacing from "../../utils/spacing";
 import { getImage, getName } from "../../functions";
 import colors from "../../utils/colors";
 import IonIcons from "@expo/vector-icons/Ionicons";
+import { Image } from "expo-image";
 
 export const PostHeader = ({
   item,
@@ -23,8 +24,8 @@ export const PostHeader = ({
       <View style={[_styles.flex_row, { gap: 10, flex: 1 }]}>
         <Image
           source={getImage({
-            uri: item?.owner?.image_url,
-            gender: item?.owner?.gender,
+            uri: item.owner.image_url,
+            gender: item.owner.gender,
           })}
           style={[
             { height: 50, width: 50, borderRadius: 100 },
