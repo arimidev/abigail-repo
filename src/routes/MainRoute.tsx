@@ -6,6 +6,7 @@ import { ProfileMenu } from "../screens/profile_section/ProfileMenu";
 import { PersonalDetails } from "../screens/profile_section/PersonalDetails";
 import { UserProfile } from "../screens/general-screens/UserProfile";
 import { PostDetails } from "../screens/general-screens/PostDetails";
+import { CommentPage } from "../screens/general-screens/CommentPage";
 
 const MainRoute = () => {
   const Stack = createNativeStackNavigator();
@@ -30,6 +31,11 @@ const MainRoute = () => {
           component={PostDetails}
           name="post_details"
           options={{ headerShown: true, title: "Post" }}
+        />
+        <Stack.Screen
+          component={CommentPage}
+          name="comment_page"
+          options={{ headerShown: true, title: "Comment" }}
         />
       </Stack.Group>
     </Stack.Navigator>
