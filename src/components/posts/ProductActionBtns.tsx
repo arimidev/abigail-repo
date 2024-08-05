@@ -3,7 +3,7 @@ import React from "react";
 import _styles from "../../utils/_styles";
 import { CommentBtn, LikeBtn, SaveBtn } from "./ActionBtns";
 
-export const CommentActionBtns = ({ item }: { item: CommentProps }) => {
+export const ProductActionBtns = ({ item }: { item: CommentProps }) => {
   //   const { likePost } = useLikePostFunction();
   //   const { savePost } = useSavePostFunction();
 

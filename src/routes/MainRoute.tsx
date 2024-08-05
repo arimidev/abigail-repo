@@ -7,6 +7,7 @@ import { PersonalDetails } from "../screens/profile_section/PersonalDetails";
 import { UserProfile } from "../screens/general-screens/UserProfile";
 import { PostDetails } from "../screens/general-screens/PostDetails";
 import { CommentPage } from "../screens/general-screens/CommentPage";
+import { ProductDetails } from "../screens/general-screens/ProductDetails";
 
 const MainRoute = () => {
   const Stack = createNativeStackNavigator();
@@ -36,6 +37,11 @@ const MainRoute = () => {
           component={CommentPage}
           name="comment_page"
           options={{ headerShown: true, title: "Comment" }}
+        />
+        <Stack.Screen
+          component={ProductDetails}
+          name="product_details"
+          options={{ headerShown: true, title: "Product" }}
         />
       </Stack.Group>
     </Stack.Navigator>

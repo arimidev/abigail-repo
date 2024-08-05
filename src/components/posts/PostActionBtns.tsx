@@ -6,6 +6,7 @@ import _styles from "../../utils/_styles";
 import spacing from "../../utils/spacing";
 import colors from "../../utils/colors";
 import IonIcons from "@expo/vector-icons/Ionicons";
+import { CommentBtn, LikeBtn, RepostBtn, SaveBtn } from "./ActionBtns";
 
 export const PostActionBtns = ({ item }: { item: UserPostProps }) => {
   const { likePost } = useLikePostFunction();
@@ -28,46 +29,11 @@ export const PostActionBtns = ({ item }: { item: UserPostProps }) => {
       ]}
     >
       <View style={[_styles.flex_row, { gap: 15, flex: 1 }]}>
-        <Pressable
-          onPress={() => {
-            likePostHere();
-          }}
-        >
-          <IonIcons
-            name={item.is_liked_by_user == true ? "heart" : "heart-outline"}
-            size={18}
-            color={item.is_liked_by_user == true ? "#FF6E6E" : colors.color_5}
-          />
-        </Pressable>
-        <Text style={[_styles.font_12_semi_bold, { color: colors.color_2 }]}>
-          {item.likes}
-        </Text>
-        <Pressable>
-          <IonIcons name="chatbox-outline" size={18} color={colors.color_5} />
-        </Pressable>
-        <Text style={[_styles.font_12_semi_bold, { color: colors.color_2 }]}>
-          {item.comments}
-        </Text>
-        <Pressable>
-          <IonIcons
-            name="repeat"
-            size={22}
-            color={item.is_reposted_by_user ? "#87B66A" : colors.color_5}
-          />
-        </Pressable>
-        <Text style={[_styles.font_12_semi_bold, { color: colors.color_2 }]}>
-          {item.reposts}
-        </Text>
+        <LikeBtn item={item} onPress={likePostHere} />
+        <CommentBtn item={item} />
+        <RepostBtn item={item} onPress={null} />
       </View>
-      <View style={[_styles.flex_row, { gap: 15 }]}>
-        <Pressable onPress={savePostHere}>
-          <IonIcons
-            name={item.is_saved_by_user ? "bookmark" : "bookmark-outline"}
-            size={18}
-            color={item.is_saved_by_user ? "#171717" : colors.color_5}
-          />
-        </Pressable>
-      </View>
+      <SaveBtn item={item} onPress={savePostHere} />
     </View>
   );
 };

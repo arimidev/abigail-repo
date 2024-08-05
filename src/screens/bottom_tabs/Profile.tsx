@@ -7,6 +7,7 @@ import {
   View,
   ListRenderItem,
   ActivityIndicator,
+  Pressable,
 } from "react-native";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { MainContainer } from "../../components/MainContainer";
@@ -41,6 +42,10 @@ import {
   select_seen_users,
   update_user,
 } from "../../redux_utils/features/seen_users";
+import dummy from "../../utils/dummy";
+import { Image } from "expo-image";
+import { WINDOW_WIDTH } from "@gorhom/bottom-sheet";
+import { ProductView } from "../../components/posts/ProductView";
 
 interface Props {
   User: UserProps;
@@ -401,11 +406,21 @@ export const Profile = () => {
               }}
             />
           </Tabs.Tab>
+          {/* products tab */}
           <Tabs.Tab name="Shop" label={"Shop"}>
-            <Tabs.ScrollView>
-              <View style={[styles.box, styles.boxA]} />
-              <View style={[styles.box, styles.boxB]} />
-            </Tabs.ScrollView>
+            <Tabs.FlatList
+              contentContainerStyle={{
+                marginTop: 20,
+                paddingBottom: 50,
+                paddingHorizontal: spacing.padding_horizontal,
+              }}
+              data={dummy}
+              numColumns={2}
+              keyExtractor={(item) => item._id}
+              renderItem={({ item, index }) => (
+                <ProductView item={item} index={index} />
+              )}
+            />
           </Tabs.Tab>
         </Tabs.Container>
       </View>
