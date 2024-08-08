@@ -12,7 +12,6 @@ import { PostText } from "../../components/posts/PostText";
 import { PostMedias } from "../../components/posts/PostMedias";
 import { CommentActionBtns } from "../../components/posts/CommentActions";
 import {
-  useGetChildComments_qQuery,
   useGetChildCommentsMutation,
   useGetCommentDetailsQuery,
 } from "../../redux_utils/api_slice";
@@ -29,17 +28,16 @@ import CommentInput from "../../components/posts/CommentInput";
 import { getDate, showToast } from "../../functions";
 import spacing from "../../utils/spacing";
 
-export const CommentPage = ({ navigation, route }) => {
+export const CommentPage = ({ route }) => {
   // redux
   const seen_posts: Array<UserPostProps> = useSelector(select_seen_posts);
   const passedData: CommentProps = route.params.passedData;
   const dispatch = useDispatch();
   // state
   const [comments, setComments] = useState<Array<CommentProps>>([]);
-  const [page, setPage] = useState(1);
+  const [commentsPage, setPage] = useState(1);
   const [is_data_available, set_is_data_available] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  //   const [commentData, setCommentData] = useState<CommentProps>(passedData);
 
   // api hooks
 
@@ -61,16 +59,6 @@ export const CommentPage = ({ navigation, route }) => {
     getChildComments,
     { isLoading: mutCommentsLoading, isError: mutCommentsErr },
   ] = useGetChildCommentsMutation();
-  // const {
-  //   data: queryComments,
-  //   isLoading: queryCommentsLoading,
-  //   isError: queryCommentsErr,
-  //   refetch: queryCommentsRefetch,
-  // } = useGetChildComments_qQuery({
-  //   id: passedData?._id,
-  //   page: 1,
-  //   limit: 5,
-  // });
 
   // functions
 
@@ -80,11 +68,14 @@ export const CommentPage = ({ navigation, route }) => {
         id: passedData._id,
         page: page,
         limit: 5,
+        postId: passedData.post,
+        parentId: passedData._id,
       }).unwrap();
       res.results.map((item) => {
         dispatch(add_post(item));
       });
       set_is_data_available(res.results?.length > 0);
+
       return res.results;
     } catch (error) {
       console.log(error);
@@ -99,6 +90,9 @@ export const CommentPage = ({ navigation, route }) => {
   const refreshFunc = useCallback(() => {
     setRefreshing(true);
     pageCommentRefetch();
+    if (pageComment) {
+      dispatch(add_post(pageComment.results));
+    }
     getChildCommentsFunc(1).then((data) => {
       setComments([...data, ...comments]);
     });
@@ -107,39 +101,32 @@ export const CommentPage = ({ navigation, route }) => {
 
   function setNextCommentPage(data) {
     setComments([...comments, ...data]);
-    setPage(page + 1);
+    setPage(commentsPage + 1);
   }
 
+  const validatedComments = (arr: Array<CommentProps>) => {
+    const validated_items = arr.map((comment) => {
+      const reduxItem = seen_posts.find(
+        (seen_comment) => seen_comment._id === comment._id
+      );
+      return reduxItem ? { ...comment, ...reduxItem } : comment;
+    });
+    return validated_items;
+  };
+
   const uniqueComments: Array<CommentProps> = Array.from(
-    comments.reduce((map, obj) => map.set(obj._id, obj), new Map()).values()
+    validatedComments(comments)
+      .reduce((map, obj) => map.set(obj._id, obj), new Map())
+      .values()
   );
 
   // effects
 
-  // update main comment
-
-  useEffect(() => {
-    if (pageComment) {
-      dispatch(add_post(pageComment.results));
-    }
-  }, [pageComment]);
-
   // get child comments on mount
 
   useEffect(() => {
-    getChildCommentsFunc(page).then(setNextCommentPage);
+    getChildCommentsFunc(commentsPage).then(setNextCommentPage);
   }, []);
-
-  // update child comments
-
-  // useEffect(() => {
-  // if (queryComments?.results) {
-  //   setComments([...queryComments?.results, ...comments]);
-  //   queryComments?.results.map((item) => {
-  //     dispatch(add_post(item));
-  //   });
-  // }
-  // }, [queryComments]);
 
   // list header comp
 
@@ -186,8 +173,12 @@ export const CommentPage = ({ navigation, route }) => {
               )
             }
             onEndReached={() => {
-              if (is_data_available == true && !mutCommentsLoading) {
-                getChildCommentsFunc(page).then(setNextCommentPage);
+              if (
+                is_data_available == true &&
+                !mutCommentsLoading &&
+                !mutCommentsErr
+              ) {
+                getChildCommentsFunc(commentsPage).then(setNextCommentPage);
               }
             }}
           />

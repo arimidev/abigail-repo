@@ -1,58 +1,32 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import React from "react";
-import useLikePostFunction from "../../hooks/useLikePostFunction";
-import useSavePostFunction from "../../hooks/useSavePostFunction";
 import _styles from "../../utils/_styles";
-import spacing from "../../utils/spacing";
-import colors from "../../utils/colors";
-import IonIcons from "@expo/vector-icons/Ionicons";
+import { CommentBtn, LikeBtn, SaveBtn } from "./ActionBtns";
+import useLikeCommentFunction from "../../hooks/useLikeComment";
+import useSaveCommentFunction from "../../hooks/useSaveComment";
 
 export const CommentActionBtns = ({ item }: { item: CommentProps }) => {
   //   const { likePost } = useLikePostFunction();
   //   const { savePost } = useSavePostFunction();
+  const { likeComment } = useLikeCommentFunction();
+  const { saveComment } = useSaveCommentFunction();
 
   // functions
 
   async function likePostHere() {
-    // const result = await likePost({ post: item });
+    const result = await likeComment({ comment: item });
   }
   async function savePostHere() {
-    // const result = await savePost({ post: item });
+    const result = await saveComment({ comment: item });
   }
 
   return (
     <View style={[_styles.flex_row]}>
       <View style={[_styles.flex_row, { gap: 15, flex: 1 }]}>
-        <Pressable
-          onPress={() => {
-            likePostHere();
-          }}
-        >
-          <IonIcons
-            name={item.is_liked_by_user == true ? "heart" : "heart-outline"}
-            size={18}
-            color={item.is_liked_by_user == true ? "#FF6E6E" : colors.color_5}
-          />
-        </Pressable>
-        <Text style={[_styles.font_12_semi_bold, { color: colors.color_2 }]}>
-          {item.likes}
-        </Text>
-        <Pressable>
-          <IonIcons name="chatbox-outline" size={18} color={colors.color_5} />
-        </Pressable>
-        <Text style={[_styles.font_12_semi_bold, { color: colors.color_2 }]}>
-          {item.comments}
-        </Text>
+        <LikeBtn item={item} onPress={likePostHere} />
+        <CommentBtn item={item} />
       </View>
-      <View style={[_styles.flex_row, { gap: 15 }]}>
-        <Pressable onPress={savePostHere}>
-          <IonIcons
-            name={item.is_saved_by_user ? "bookmark" : "bookmark-outline"}
-            size={18}
-            color={item.is_saved_by_user ? "#171717" : colors.color_5}
-          />
-        </Pressable>
-      </View>
+      <SaveBtn item={item} onPress={savePostHere} />
     </View>
   );
 };

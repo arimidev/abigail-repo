@@ -1,39 +1,28 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
-import {
-  useSave_postMutation,
-  useSave_productMutation,
-} from "../redux_utils/api_slice";
+import { useSave_commentMutation } from "../redux_utils/api_slice";
 import { showToast } from "../functions";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { update_post } from "../redux_utils/features/seen_posts";
-import { select_user } from "../redux_utils/features/user";
 
-const useSavePostFunction = () => {
-  const [save_post] = useSave_postMutation();
-  const [save_product] = useSave_productMutation();
+const useSaveCommentFunction = () => {
+  const [save_comment] = useSave_commentMutation();
   const dispatch = useDispatch();
 
-  const savePost = async ({
-    post,
-    type,
-  }: {
-    post: UserPostProps | ProductProps;
-    type: "post" | "product";
-  }) => {
+  const saveComment = async ({ comment }: { comment: CommentProps }) => {
     // ================== local update
     function localUpdate() {
-      if (post.is_saved_by_user == true) {
+      if (comment.is_saved_by_user == true) {
         dispatch(
           update_post({
-            ...post,
+            ...comment,
             is_saved_by_user: false,
           })
         );
       } else {
         dispatch(
           update_post({
-            ...post,
+            ...comment,
             is_saved_by_user: true,
           })
         );
@@ -44,16 +33,13 @@ const useSavePostFunction = () => {
 
     //  update on backend
     try {
-      const res =
-        type == "post"
-          ? await save_post(post._id).unwrap()
-          : await save_product(post._id).unwrap();
+      const res = await save_comment(comment._id).unwrap();
       dispatch(update_post(res.results));
       showToast({
         description:
           res.action == "saved"
-            ? `${type == "post" ? "Post" : "Product"} added to bookmark.`
-            : `${type == "post" ? "Post" : "Product"} removed from bookmark.`,
+            ? `Comment added to bookmark.`
+            : `Comment removed from bookmark.`,
         type: "default",
         duration: 3000,
       });
@@ -67,9 +53,9 @@ const useSavePostFunction = () => {
       });
     }
   };
-  return { savePost };
+  return { saveComment };
 };
 
-export default useSavePostFunction;
+export default useSaveCommentFunction;
 
 const styles = StyleSheet.create({});
