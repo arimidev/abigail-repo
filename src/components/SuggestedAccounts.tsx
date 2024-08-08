@@ -96,7 +96,7 @@ export const SuggestedAccount = ({
       });
 
       // unfollow locally ==========================
-      followLocally();
+      // followLocally();
     }
   }
 

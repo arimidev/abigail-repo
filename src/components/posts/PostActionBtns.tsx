@@ -15,10 +15,10 @@ export const PostActionBtns = ({ item }: { item: UserPostProps }) => {
   // functions
 
   async function likePostHere() {
-    const result = await likePost({ post: item });
+    const result = await likePost({ post: item, type: "post" });
   }
   async function savePostHere() {
-    const result = await savePost({ post: item });
+    const result = await savePost({ post: item, type: "post" });
   }
 
   return (

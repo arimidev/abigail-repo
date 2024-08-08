@@ -121,3 +121,20 @@ export function getSavedAccount(token: string) {
   }
   return null;
 }
+
+export function hasObjectChanged(latestObj, recentObj) {
+  const latestEntries = Object.entries(latestObj);
+  const recentEntries = Object.entries(recentObj);
+
+  if (latestEntries.length !== recentEntries.length) {
+    return true;
+  }
+
+  for (const [key, value] of latestEntries) {
+    if (recentObj[key] !== value) {
+      return true;
+    }
+  }
+
+  return false;
+}

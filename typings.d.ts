@@ -57,4 +57,24 @@ type CommentProps = {
   likes: number;
   comments: number;
   saves: number;
+  post: string;
+};
+
+type ProductProps = {
+  _id: string;
+  description: string;
+  medias: Array<string>;
+  owner: UserProps;
+  likes: number;
+  comments: number;
+  saves: number;
+  title: string;
+  website: string;
+  price: number;
+  type: "product";
+  category: string;
+  sub_category: string;
+  created_at: string;
+  is_liked_by_user: boolean;
+  is_saved_by_user: boolean;
 };

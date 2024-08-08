@@ -16,6 +16,7 @@ import spacing from "../../utils/spacing";
 import { useNavigation } from "@react-navigation/native";
 import { PostHeader } from "./PostHeader";
 import { ProductActionBtns } from "./ProductActionBtns";
+import { getDate } from "../../functions";
 
 // const FeedProduct = () => {
 //     return()
@@ -25,6 +26,11 @@ const DetailsProduct = ({ item }: { item: any }) => {
   return (
     <View style={{ gap: 10 }}>
       <PostHeader item={item} />
+      <View style={[, { paddingHorizontal: spacing.padding_horizontal }]}>
+        <Text style={[_styles.font_12_medium, { fontSize: 10 }]}>
+          {getDate(item.created_at)}
+        </Text>
+      </View>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}

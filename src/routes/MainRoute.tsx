@@ -4,7 +4,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import TabRoute from "./TabRoute";
 import { ProfileMenu } from "../screens/profile_section/ProfileMenu";
 import { PersonalDetails } from "../screens/profile_section/PersonalDetails";
-import { UserProfile } from "../screens/general-screens/UserProfile";
 import { PostDetails } from "../screens/general-screens/PostDetails";
 import { CommentPage } from "../screens/general-screens/CommentPage";
 import { ProductDetails } from "../screens/general-screens/ProductDetails";
@@ -27,7 +26,6 @@ const MainRoute = () => {
         />
       </Stack.Group>
       <Stack.Group screenOptions={{ animation: "slide_from_right" }}>
-        <Stack.Screen component={UserProfile} name="user_profile" />
         <Stack.Screen
           component={PostDetails}
           name="post_details"

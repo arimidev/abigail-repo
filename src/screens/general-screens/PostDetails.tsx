@@ -1,25 +1,12 @@
-import {
-  ActivityIndicator,
-  FlatList,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
 import _styles from "../../utils/_styles";
 import colors from "../../utils/colors";
 import {
   useGet_post_detailsQuery,
-  useGetPostComments_qQuery,
   useGetPostCommentsMutation,
 } from "../../redux_utils/api_slice";
 import { Loader } from "../../components/Loader";
-import { PostHeader } from "../../components/posts/PostHeader";
-import { PostText } from "../../components/posts/PostText";
-import { PostMedias } from "../../components/posts/PostMedias";
-import { PostActionBtns } from "../../components/posts/PostActionBtns";
-import spacing from "../../utils/spacing";
 import { useDispatch, useSelector } from "react-redux";
 import {
   add_post,
@@ -28,63 +15,10 @@ import {
 } from "../../redux_utils/features/seen_posts";
 import CommentInput from "../../components/posts/CommentInput";
 import { CommentComp } from "../../components/posts/Comment";
-import { getDate, showToast } from "../../functions";
+import { showToast } from "../../functions";
+import { PostView } from "../../components/posts/postView";
 
-const UserRepostComp = ({ item }: { item: UserPostProps }) => {
-  return (
-    <View style={{ gap: 10 }}>
-      <PostHeader item={item} />
-      {item.post_text && <PostText item={item} type="details" />}
-      {item.medias?.length > 0 && <PostMedias item={item} />}
-      <View
-        style={[
-          _styles.flex_row,
-          { gap: 10, paddingLeft: spacing.padding_horizontal },
-        ]}
-      >
-        <View style={styles.repost_separator} />
-        <View style={{ gap: 10, flex: 1 }}>
-          <PostHeader item={item.post} type="reposted" />
-          {item.post.post_text && <PostText item={item.post} type="reposted" />}
-          {item.post.medias?.length > 0 && (
-            <PostMedias item={item.post} type="reposted" />
-          )}
-        </View>
-      </View>
-      <PostActionBtns item={item} />
-      <View style={styles.separator} />
-    </View>
-  );
-};
-
-const PostComp = ({ item }: { item: UserPostProps }) => {
-  return (
-    <View
-      style={{
-        gap: 10,
-        paddingVertical: 10,
-      }}
-    >
-      {item.type == "repost" && item.post && <UserRepostComp item={item} />}
-      {item.type == "post" && (
-        <>
-          <PostHeader item={item} />
-          <View style={[, { paddingHorizontal: spacing.padding_horizontal }]}>
-            <Text style={[_styles.font_12_medium, { fontSize: 10 }]}>
-              {getDate(item.created_at)}
-            </Text>
-          </View>
-          {item.post_text && <PostText item={item} type="details" />}
-          {item.medias?.length > 0 && <PostMedias item={item} />}
-          <PostActionBtns item={item} />
-          <View style={styles.separator} />
-        </>
-      )}
-    </View>
-  );
-};
-
-export const PostDetails = ({ navigation, route }) => {
+export const PostDetails = ({ route }) => {
   // redux
   const seen_posts: Array<UserPostProps> = useSelector(select_seen_posts);
   const dispatch = useDispatch();
@@ -92,7 +26,7 @@ export const PostDetails = ({ navigation, route }) => {
   const passedData: UserPostProps = route.params.passedData;
   // ======= states ====
   const [comments, setComments] = useState<Array<CommentProps>>([]);
-  const [page, setPage] = useState(1);
+  const [commentsPage, setPage] = useState(1);
   const [is_data_available, set_is_data_available] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   // ===== api hooks  ====
@@ -110,18 +44,10 @@ export const PostDetails = ({ navigation, route }) => {
   const postDataState = reduxItem ?? passedData;
 
   // comments
-  const [getPostComments, { isLoading: mutCommentsLoading }] =
-    useGetPostCommentsMutation();
-
-  // const {
-  //   data: query_comments_data,
-  //   isLoading: queryCommentsLoading,
-  //   refetch: query_comments_refetch,
-  // } = useGetPostComments_qQuery({
-  //   postId: passedData?._id,
-  //   page: 1,
-  //   limit: 5,
-  // });
+  const [
+    getPostComments,
+    { isLoading: mutCommentsLoading, isError: mutCommentErr },
+  ] = useGetPostCommentsMutation();
 
   // functions
 
@@ -149,12 +75,15 @@ export const PostDetails = ({ navigation, route }) => {
 
   function setNextCommentPage(data) {
     setComments([...comments, ...data]);
-    setPage(page + 1);
+    setPage(commentsPage + 1);
   }
 
   const refreshFunc = useCallback(() => {
     setRefreshing(true);
     postReftch();
+    if (postData) {
+      dispatch(add_post(postData.results));
+    }
     getComments(1).then((data) => {
       setComments([...data, ...comments]);
     });
@@ -180,23 +109,8 @@ export const PostDetails = ({ navigation, route }) => {
   //effects
 
   useEffect(() => {
-    if (postData) {
-      dispatch(add_post(postData.results));
-    }
-  }, [postData]);
-
-  useEffect(() => {
-    getComments(page).then(setNextCommentPage);
+    getComments(commentsPage).then(setNextCommentPage);
   }, []);
-
-  // useEffect(() => {
-  // if (query_comments_data?.results) {
-  //   setComments([...query_comments_data?.results, ...comments]);
-  //   query_comments_data?.results.map((item) => {
-  //     dispatch(add_post(item));
-  //   });
-  // }
-  // }, [query_comments_data]);
 
   return (
     <View style={[_styles.flex_1, { backgroundColor: colors.color_1 }]}>
@@ -206,7 +120,9 @@ export const PostDetails = ({ navigation, route }) => {
           <FlatList
             refreshing={refreshing}
             onRefresh={refreshFunc}
-            ListHeaderComponent={<PostComp item={postDataState} />}
+            ListHeaderComponent={
+              <PostView item={postDataState} display_type="details" />
+            }
             data={uniqueComments}
             keyExtractor={(item) => item._id.toString()}
             renderItem={(item) => <CommentComp {...item} />}
@@ -220,8 +136,12 @@ export const PostDetails = ({ navigation, route }) => {
               )
             }
             onEndReached={() => {
-              if (is_data_available == true && !mutCommentsLoading) {
-                getComments(page).then(setNextCommentPage);
+              if (
+                is_data_available == true &&
+                !mutCommentsLoading &&
+                !mutCommentErr
+              ) {
+                getComments(commentsPage).then(setNextCommentPage);
               }
             }}
           />
@@ -233,17 +153,4 @@ export const PostDetails = ({ navigation, route }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  repost_separator: {
-    height: "90%",
-    width: 1.5,
-    backgroundColor: "#D7D7D7",
-    left: 10,
-  },
-  separator: {
-    height: 1.5,
-    width: "100%",
-    backgroundColor: colors.color_7,
-    marginVertical: 10,
-  },
-});
+const styles = StyleSheet.create({});
